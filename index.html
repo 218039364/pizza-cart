@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Pizza</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        .button {
+            margin-right: 10px; /* Adjust the margin as per your desired spacing */
+        }
+
+        .error {
+          color: red;
+        }
+
+        .success {
+          color: rgb(0, 255, 60);
+        }
+    </style>
+</head>
+
+<body>
+  <center><h1 >Perfect Pizza</h1></center>
+    
+    <div class="container" x-data="{
+        cart: [],
+        message: null,
+        isError: false,
+        smallCount: 0,
+        mediumCount: 0,
+        largeCount: 0,
+        smallPrice: 54,
+        mediumPrice: 85,
+        largePrice: 129,
+        amount: null,
+        addToCart: function (size, price, count) {
+            if (count > 0) {
+                this.cart.push({
+                    size: size,
+                    price: price,
+                    count: count
+                });
+            }
+        },
+        removeFromCart: function (index) {
+            this.cart.splice(index, 1);
+        },
+        calculateTotal: function () {
+            let total = 0;
+            this.cart.forEach(function (item) {
+                total += item.price * item.count;
+            });
+            return total;
+        }, 
+        payBill() {
+          const total = this.calculateTotal()
+          if(this.amount >= total) {
+            // show success
+            this.message = 'Enjoy your meal';
+            this.isError = false;
+          } else {
+            // you broke
+            this.message = 'Error';
+
+            this.isError = true;
+
+          }
+
+          setTimeout(function(){
+            this.message = null;
+            alert(this.message)
+          }, 2000)
+        }
+    }"><div style="background-color: burlywood;">
+        <div>
+            <div class="my-4">
+                Small
+                <button x-on:click="smallCount++">+</button>
+                <button x-on:click="smallCount = Math.max(0, smallCount - 1)">-</button>
+                <span x-text="smallPrice * smallCount"></span>
+                <button x-on:click="addToCart('Small', smallPrice, smallCount)">Order</button>
+            </div>
+            <br>
+        </div>
+        <div>
+            <div class="my-4">
+                Medium
+                <button x-on:click="mediumCount++">+</button>
+                <button x-on:click="mediumCount = Math.max(0, mediumCount - 1)">-</button>
+                <span x-text="mediumPrice * mediumCount"></span>
+                <button x-on:click="addToCart('Medium', mediumPrice, mediumCount)">Order</button>
+            </div>
+            <br>
+        </div>
+        <div>
+            <div class="my-4">
+                Large
+                <button x-on:click="largeCount++">+</button>
+                <button x-on:click="largeCount = Math.max(0, largeCount - 1)">-</button>
+                <span x-text="largePrice * largeCount"></span>
+                <button x-on:click="addToCart('Large', largePrice, largeCount)">Order</button>
+            </div>
+            <br>
+        </div>
+        <div>
+            Total Cost: <span x-text="calculateTotal()"></span>
+        </div>
+        </div>
+        <br>
+        <div x-show="message" style="background-color: antiquewhite;">
+          <p :class="isError ? 'error' : 'success'" x-text="message" x-show="message !=null"></p>
+          <!-- <p x-text="amount" class="error">Sorry-that is not enough money</p> -->
+        </div>
+
+          <div style="background-color: burlywood">
+            Payment <input x-model="amount" type="number" name="" id="">
+          </div>
+          <center>
+            <button @click="payBill()">PAY</button>
+          </center>
+        
+    </div>
+
+    <hr>
+    <br>
+
+    <div class="pizzas">
+        <div class="pizza large_pizza">
+            <h2>Large Pizza</h2>
+            <img src="pizza-png-from-pngfre-16.png" width="150">
+            <h3>R129.00</h3>
+            <div>
+                Chicken, Bacon, guacamole, cheddar, red onion, & BBQ sauceOne brave soul did take a stab at translating
+                the almost-not-quite-Latin. According to The Guardian, Jaspreet Singh Boparai undertook the challenge.
+            </div>
+        </div>
+
+        <div class="pizza medium_pizza">
+            <h2>Medium Pizza</h2>
+            <img src="pizza-png-from-pngfre-16.png" width="120">
+            <h3>R85.00</h3>
+            <div>
+                Chicken, Bacon, guacamole, cheddar, red onion, & BBQ sauce.One brave soul did take a stab at translating
+                the almost-not-quite-Latin. According to The Guardian, Jaspreet Singh Boparai undertook the challenge.
+            </div>
+        </div>
+
+        <div class="pizza small_pizza">
+            <h2>Small Pizza</h2>
+            <img src="pizza-png-from-pngfre-16.png" width="100">
+            <h3>R54.00</h3>
+            <div>
+                Chicken, Bacon, guacamole, cheddar, red onion, & BBQ sauceOne brave soul did take a stab at translating
+                the almost-not-quite-Latin. According to The Guardian, Jaspreet Singh Boparai undertook the challenge.
+            </div>
+        </div>
+    </div>
+
+    <div class="contact_us">
+        <h2>Contact details</h2>
+        <div>
+            Contact us at: 0810757789 or perfectpizza@gmail.com
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>
+
